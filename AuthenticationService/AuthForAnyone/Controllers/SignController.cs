@@ -15,7 +15,7 @@ namespace AuthForAnyone.Controllers
             _signService = signService;
         }
 
-        [HttpPost("sign_in")]
+        [HttpPost("sign-in")]
         public async Task<IActionResult> SignInAsync(SignInUserDto signInUserDto)
         {
             var result = await _signService.SignInAsync(signInUserDto);
@@ -23,13 +23,13 @@ namespace AuthForAnyone.Controllers
             return Ok(result);
         }
 
-        [HttpPost("sign_out")]
+        [HttpPost("sign-out")]
         public IActionResult SignOut(SignInUserDto signInUserDto)
         {
             return BadRequest();
         }
 
-        [HttpPost("sign_up")]
+        [HttpPost("sign-up")]
         public async Task<IActionResult> SignUpAsync(SignUpUserDto signUpUserDto)
         {
             var result = await _signService.SignUpAsync(signUpUserDto);

@@ -25,13 +25,13 @@ public class ForgetPasswordService(IPersonaManager personaManager) : IForgetPass
 
     public async Task<bool> CreateNewPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        if (string.IsNullOrEmpty(resetPasswordDto.Id) ||
-            string.IsNullOrEmpty(resetPasswordDto.NewPassword) ||
-            string.IsNullOrEmpty(resetPasswordDto.SecureToken) ||
-            string.IsNullOrEmpty(resetPasswordDto.Expiration))
-        {
-            throw ForgetPasswordError.RequiredFieldIsEmpty;
-        }
+        //if (string.IsNullOrEmpty(resetPasswordDto.Id) ||
+        //    string.IsNullOrEmpty(resetPasswordDto.NewPassword) ||
+        //    string.IsNullOrEmpty(resetPasswordDto.SecureToken) ||
+        //    string.IsNullOrEmpty(resetPasswordDto.Expiration))
+        //{
+        //    throw ForgetPasswordError.RequiredFieldIsEmpty;
+        //}
 
         if (IsResetTokenExpire(resetPasswordDto.Expiration)) throw ForgetPasswordError.ResetTokenExpired;
 
