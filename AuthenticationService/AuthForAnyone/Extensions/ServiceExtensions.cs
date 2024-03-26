@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core;
+using Core.Abstract;
 using Core.Interfaces;
 using Core.Services;
 using DataAccess.DbContext;
@@ -28,6 +30,7 @@ public static class ServiceExtensions
     public static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<ISignService, SignService>();
+        services.AddScoped<IForgetPasswordService, ForgetPasswordService>();
     }
 
     public static void ConfigureRepositories(this IServiceCollection services)
@@ -35,7 +38,6 @@ public static class ServiceExtensions
         services.AddScoped<ISignRepository, SignRepository>();
         services.AddScoped<ITokenManager, TokenManager>();
         services.AddScoped<ITokenManagerFactory, TokenManagerFactory>();
-        services.AddScoped<IPersonaManager, PersonaManager>();
     }
 
     public static void ConfigureIdentities(this IServiceCollection services)
@@ -53,6 +55,8 @@ public static class ServiceExtensions
             .AddEntityFrameworkStores<AuthContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
+            
+        services.AddScoped<IPersonaManager, PersonaManager>();
     }
 
     public static void ConfigureAutoMapper(this IServiceCollection services)

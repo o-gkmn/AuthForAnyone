@@ -43,3 +43,11 @@ public class SessionError
 {
     public static readonly Error SessionTimeExpired = new Error(StatusCodes.Status401Unauthorized, "SessionError.SessionTimeExpired", "Session time expired. Please sign in again.");
 }
+
+public class ForgetPasswordError
+{
+    public static readonly Error EmptyEmail = new Error(StatusCodes.Status400BadRequest, "ForgetPasswordError.EmptyEmail", "Email can not be empty!");
+    public static readonly Error ResetTokenExpired = new Error(StatusCodes.Status400BadRequest, "ForgetPasswordError.ResetTokenExpired", "This is not valid request.");
+    public static readonly Error RequiredFieldIsEmpty = new Error(StatusCodes.Status400BadRequest, "ForgetPasswordError.RequiredFieldIsEmpty", "Required field can not be empty!");
+    public static readonly Error SamePassword = new Error(StatusCodes.Status400BadRequest, "ForgetPasswordError.SamePassword", "the new password cannot be the same as the previous one");
+}
