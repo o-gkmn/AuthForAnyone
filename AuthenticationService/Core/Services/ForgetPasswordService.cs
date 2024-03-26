@@ -1,4 +1,5 @@
 ﻿using Identity.Interfaces;
+using Infrastructure.Configuration;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -41,7 +42,8 @@ public class ForgetPasswordService(IPersonaManager personaManager) : IForgetPass
     private void SendEmail(string resetLink, string mail, string name)
     {
         var email = new MimeMessage();
-        IConfiguration configuration = CreateInstanceOfIConfiguration();
+
+        IConfiguration configuration = ConfigurationFactory.GetInstance().Configuration;
         var smtpCredentials = configuration.GetSection("SmtpCredentials");
 
         email.From.Add(new MailboxAddress("Özgür", "ozgur.gokmen735@gmail.com"));
@@ -83,20 +85,5 @@ public class ForgetPasswordService(IPersonaManager personaManager) : IForgetPass
         var expirationDateTime = DateTime.Parse(Uri.UnescapeDataString(expiration));
         if (expirationDateTime < DateTime.Now) return true;
         return false;
-    }
-
-    private IConfiguration CreateInstanceOfIConfiguration()
-    {
-        return new ConfigurationBuilder()
-            .SetBasePath(ApplicationDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-    }
-
-    private string ApplicationDirectory()
-    {
-        var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        var appRoot = Path.GetDirectoryName(location);
-        return appRoot;
     }
 }
