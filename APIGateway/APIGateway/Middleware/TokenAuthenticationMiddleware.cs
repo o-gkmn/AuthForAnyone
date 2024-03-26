@@ -9,15 +9,22 @@ public class TokenAuthenticationMiddleware
 {
     private readonly RequestDelegate next;
     private HttpClient _httpClient;
+    private List<string> AnonymousEndpoints;
 
     public TokenAuthenticationMiddleware(RequestDelegate next, IHttpClientFactory httpClientFactory)
     {
         this.next = next;
         _httpClient = httpClientFactory.CreateClient();
+        AnonymousEndpoints = GetAnonymousEndpoints("anonymousEndpoints.json");
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
+        if (ShouldBypassAuthentication(httpContext.Request.Path))
+        {
+            await next.Invoke(httpContext);
+            return;
+        }
 
         var token = ExtractTokenFromHeaders(httpContext);
         var httpResponseMessage = await SendRequestAsync("validate-token", token);
@@ -30,7 +37,7 @@ public class TokenAuthenticationMiddleware
         }
         return;
     }
-    
+
     private async Task<bool> CheckTokensExpirationsAsync(HttpContext httpContext, HttpResponseMessage httpResponseMessage)
     {
         var oldToken = ExtractTokenFromHeaders(httpContext);
@@ -118,5 +125,22 @@ public class TokenAuthenticationMiddleware
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = (int)httpResponseMessage.StatusCode;
         await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(jsonObject));
+    }
+
+    public List<string> GetAnonymousEndpoints(string filePath)
+    {
+        List<string> anonymousEndpoints = new List<string>();
+
+        if (File.Exists(filePath))
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            anonymousEndpoints = JsonConvert.DeserializeObject<List<string>>(jsonContent);
+        }
+        return anonymousEndpoints;
+    }
+
+    private bool ShouldBypassAuthentication(PathString path)
+    {
+        return AnonymousEndpoints.Any(endpoint => path.StartsWithSegments(endpoint));
     }
 }

@@ -1,0 +1,58 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/sign/sign-in",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7156
+        }
+      ],
+      "UpstreamPathTemplate": "/SignIn",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/sign/sign-up",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7156
+        }
+      ],
+      "UpstreamPathTemplate": "/SignUp",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AllowAnonymous": true
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/forget-password",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7156
+        }
+      ],
+      "UpstreamPathTemplate": "/ForgetPassword",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/forget-password/reset-password",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7156
+        }
+      ],
+      "UpstreamPathTemplate": "/ResetPassword",
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7276"
+  }
+}
